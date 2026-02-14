@@ -1,0 +1,73 @@
+===============================================================================
+[Q1] Find the countries where more languages are spoken than in the country 
+     with code 'MEX'.
+
+     Report the code of the country (as attribute 'code') and the number of 
+     languages spoken in the country (as attribute 'numlanguages'). Order does
+     not matter.
+
+     Hint: Find the number of languages spoken in 'MEX' and use that subquery
+     in a HAVING clause. And remember that you must use single quotes on your
+     strings in SQL.
+-------------------------------------------------------------------------------
+SELECT
+  countrycode AS code,
+  COUNT(*) AS numlanguages
+FROM countrylanguage
+GROUP BY countrycode
+HAVING COUNT(*) >
+  (SELECT COUNT(*)
+   FROM countrylanguage
+   WHERE countrycode = 'MEX');
+
+
+===============================================================================
+[Q2] Find all countries where 'English' is the most commonly spoken language 
+     (based on percentage). English doesn't have to surpass all other languages
+     in the country; if it is tied for first place, that is sufficient. Note 
+     that, for some countries, every percentage in the datase is 0, so English
+     will satisfy the condition in a not very meaningful way. Don't do anything
+     to exclude those countries.
+
+     Report the country names only (as attribute 'country'); do not include 
+     any duplicates.
+
+     Hint: For each country, find the percentage for English and check 
+     whether it's >= the percentage for all the other languages spoken there.
+
+-------------------------------------------------------------------------------
+SELECT DISTINCT
+  c.name AS country
+FROM country AS c
+JOIN countrylanguage AS cl
+  ON cl.countrycode = c.code
+WHERE cl.countrylanguage = 'English'
+  AND cl.percentage >= ALL (
+    SELECT cl2.percentage
+    FROM countrylanguage AS cl2
+    WHERE cl2.countrycode = c.code
+  );
+
+
+===============================================================================
+[Q3] Find all countries in Africa that have a language spoken by fewer 
+     than 1% of the population. Report the country names only (as attribute 'name').
+     Do not include any duplicates. 
+     (Note that the percentage attribute stores a number between 0 and 100).
+
+     Hint: Go through all the countries in Africa and use EXISTS to check 
+     the other condition.
+-------------------------------------------------------------------------------
+SELECT DISTINCT
+  c.name AS name
+FROM country AS c
+WHERE c.continent = 'Africa'
+  AND EXISTS (
+    SELECT 1
+    FROM countrylanguage AS cl
+    WHERE cl.countrycode = c.code
+      AND cl.percentage < 1
+  );
+
+
+===============================================================================

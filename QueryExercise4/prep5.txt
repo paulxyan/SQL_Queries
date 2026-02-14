@@ -1,0 +1,72 @@
+===============================================================================
+[Q1] We begin with inner joins, for which there is no padding with NULL values.
+     Report the eid of every employee who manages at least two different 
+     people. Use the usual technique of table renaming and self-join, except 
+     use the keywords CROSS JOIN to take the Cartesian product of the two 
+     tables:
+
+     SELECT * FROM Table1 CROSS JOIN Table2
+
+     Table1 CROSS JOIN Table2 is completely equivalent to Table1, Table2 
+     - the latter is simply a convenient shorthand for us.
+
+     Your output table should have a single column named 'manager'.
+-------------------------------------------------------------------------------
+
+	SELECT M1.manager FROM manages M1 CROSS JOIN manages M2 WHERE M1.manager = M2.manager AND M1.junior != M2.junior;
+
+===============================================================================
+[Q2] Report the name and sales of everyone with a salary over 50, using the 
+     keywords NATURAL JOIN (plus a WHERE clause, of course):
+
+     SELECT * FROM Table1 NATURAL JOIN Table2
+
+     Your output table should have three columns: 'name', 'day', and 'amount', 
+     in that order.
+-------------------------------------------------------------------------------
+
+
+	SELECT name, day, amount FROM sales NATURAL JOIN employee WHERE salary > 50;
+
+===============================================================================
+[Q3] Report the salaries of everyone in every department, using the keywords 
+     INNER JOIN ... ON (equivalent to theta join):
+
+     SELECT * FROM Table1 INNER JOIN Table2 ON Condition
+
+     Your output table should have three columns: 'name' (name of employee),
+     'department' (name of employee's department) and 'salary' (salary of an 
+     employee in that department).
+-------------------------------------------------------------------------------
+
+	SELECT employee.name, department.name AS department, salary FROM employee INNER JOIN department ON employee.dept = department.did 
+
+===============================================================================
+[Q4] And now let's write some queries that require outer joins.
+
+     As in a previous question, report the salaries of everyone in every 
+     department except this time, each employee with no department should 
+     appear in a single tuple in the output, with their department being NULL 
+
+     As before, your output table should have three columns: 'name' (name of 
+     employee), 'department' (name of employee's department) and 'salary' 
+     (salary of an employee in that department).
+-------------------------------------------------------------------------------
+	SELECT employee.name, department.name AS department, salary FROM employee LEFT JOIN department ON employee.dept = department.did 
+
+===============================================================================
+[Q5] Report the salaries of every person by department, as in the earlier 
+     questions, except that:
+
+     - Any employee belonging to no department is reported in the output with a
+       NULL department.
+     - Any department with no employees is reported in the output with a NULL 
+     salary and employee name.
+
+     As before, your output table should have three columns, 'name', 
+     'department', and 'salary', where any of these may be NULL in an output 
+     tuple.
+-------------------------------------------------------------------------------
+	SELECT employee.name, department.name AS department, salary FROM employee FULL JOIN department ON employee.dept = department.did 
+
+===============================================================================

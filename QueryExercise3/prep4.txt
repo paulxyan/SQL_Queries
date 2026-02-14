@@ -1,0 +1,63 @@
+===============================================================================
+[Q1] Write a SQL query to report the code of the country named 'Canada'.
+     Don't forget the semicolon at the end of your SQL statement, and that SQL
+     requires single quotes on strings.
+-------------------------------------------------------------------------------
+
+SELECT code FROM country WHERE name = 'Canada'; 
+
+===============================================================================
+[Q2] Report the code of every country where 'French' is an official language.
+-------------------------------------------------------------------------------
+
+SELECT countrycode FROM countrylanguage WHERE countrylanguage = 'French' and isofficial = True;
+
+===============================================================================
+[Q3] Report the name and continent (in that order) of all countries where 
+     'German' is spoken, not necessarily as the official language.
+-------------------------------------------------------------------------------
+SELECT name, continent FROM country c1, countrylanguage c2 WHERE c1.code = c2.countrycode and c2.countrylanguage = 'German';
+
+===============================================================================
+[Q4] Report the name and population of each country in 'Europe', ordered by 
+     their population, with the most-populated country appearing first.
+-------------------------------------------------------------------------------
+SELECT name, population FROM country WHERE continent = 'Europe' ORDER BY population DESC;
+
+===============================================================================
+[Q5] Report the code of every country where at least two different languages 
+     are spoken. Rename the column to "bilingualcode". We use the keyword "as" 
+     to rename a column. For example:
+
+         SELECT code AS a, name AS b
+         FROM country;
+
+     We encourage you to use a self-join to do this question, but in order to 
+     do this you'll need to rename a table. The table-renaming syntax is simply
+     to include a new table name after the old one. For example (this one is 
+     not a self-join):
+
+         SELECT *
+         FROM country c, countrylanguage l
+         WHERE c.code = l.countrycode;
+
+     Note that the FROM clause above might look like a Cartesian product of 
+     four tables; pay attention to commas!
+
+     Do not try to eliminate duplicates from your results.
+-------------------------------------------------------------------------------
+
+SELECT c1.countrycode AS bilingualcode FROM countrylanguage c1, countrylanguage c2 WHERE c1.countrycode  = c2.countrycode and 
+c1.countrylanguage != c2.countrylanguage;
+===============================================================================
+[Q6] Report the code of every country where at least two different languages 
+     are spoken. Rename the column to "bilingualcode".
+
+     For this question, eliminate duplicates from your results by using 
+     "SELECT DISTINCT" instead of just "SELECT".
+-------------------------------------------------------------------------------
+
+
+SELECT DISTINCT c1.countrycode AS bilingualcode FROM countrylanguage c1, countrylanguage c2 WHERE c1.countrycode  = c2.countrycode and 
+c1.countrylanguage != c2.countrylanguage;
+===============================================================================

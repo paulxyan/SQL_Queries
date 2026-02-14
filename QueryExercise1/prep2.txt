@@ -1,0 +1,27 @@
+===============================================================================
+[Q1] Write a query to report all the movie titles in the database.
+     We have started writing this query for you.
+     Finish it by replacing each "xxx" with something appropriate.
+-------------------------------------------------------------------------------
+\project_{title} Movies;
+
+===============================================================================
+[Q2] Write a query to report all the characters in the database.
+-------------------------------------------------------------------------------
+
+\project_{character} Roles;
+
+===============================================================================
+[Q3] Write a query to report the title of all movies longer than 145 minutes.
+-------------------------------------------------------------------------------
+
+\project_{title} \selector_{length>'145'} Movies;
+
+===============================================================================
+[Q4] Write a query to find all the characters in movies directed by Kubrick.
+     For each, report the character and corresponding movie title,
+     in that order.
+-------------------------------------------------------------------------------
+\project_{character, title} (\selector_{director="Kubrick" and Movies.mid=Roles.mid} (Movies /product Roles));
+
+===============================================================================
